@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ExamApplication.Models.ExamResult>
+
+@{
+    ViewData["Title"] = "StudentResults";
+}
+<style>
+    /* Add some custom styles to the table */
+    .table {
+        border: 2px solid #ccc;
+        width: 100%;
+        margin-bottom: 1rem;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+
+        .table thead th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+        }
+
+        .table tbody tr:hover td {
+            background-color: rgba(226, 230, 234, 0.5); /* Semi-transparent light gray background on hover */
+        }
+</style>
+<h1>StudentResults</h1>
+
+<hr />
+<table class="table" >
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Exam.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RightAnswer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WrongAnswer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mark)
+            </th>
+
+           
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exam.Name)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RightAnswer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WrongAnswer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mark)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

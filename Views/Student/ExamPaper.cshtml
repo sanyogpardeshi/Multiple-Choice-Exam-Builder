@@ -1,0 +1,101 @@
+﻿@model ExamApplication.ViewModel.ExamPaperViewModel
+
+<div class="pageBody d-flex justify-content-around">
+
+    <form id="examForm" method="post" asp-action="ExamPaper">
+        <h2>Exam Paper</h2>
+        <h4>Please select at least one option for every question in time.</h4>
+        <div id="countdownTimer" class="text-center">
+            Time Left: <span id="timerDisplay"></span>
+        </div>
+        <hr />
+        @for (int i = 0; i < Model.Questions.Count; i++)
+        {
+            <div>
+                <h4>@Model.Questions[i].QuestionText</h4>
+                <ul>
+                    @for (int j = 0; j < Model.Questions[i].Options.Count; j++)
+                    {
+                        <li>
+                            <!-- Set a unique name for each group of radio buttons -->
+                            <input type="radio" id="Ques" name="question_@i" value="@Model.Questions[i].Options[j].Id" />
+                            <label>@Model.Questions[i].Options[j].OptionText</label>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+        <div class="form-group">
+            <label asp-for="SelectedOptions" class="control-label" hidden></label>
+            <input asp-for="SelectedOptions" name="SelectedOptions" hidden />
+        </div>
+        <!-- Add a disabled submit button -->
+        <input type="submit" id="submitButton" value="Submit Exam" />
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Attach event handler to radio buttons
+            $('input[id="Ques"]').change(function () {
+                var isChecked = $(this).prop('checked');
+                console.log("Change method Triggered. The Id is: ", $(this).val());
+                updateSelectedOptions();
+            });
+
+            function updateSelectedOptions() {
+                const selectedOptions = [];
+
+                $('input[id="Ques"]:checked').each(function () {
+                    const valueToAdd = parseInt($(this).val());
+                    console.log("Add method Triggered. The Id is: ", $(this).val());
+
+                    selectedOptions.push(valueToAdd);
+                });
+
+                const selectedOptionsString = selectedOptions.join("-");
+                $('input[name="SelectedOptions"]').val(selectedOptionsString);
+                console.log("SelectedOptions Value: ", $('input[name="SelectedOptions"]').val());
+            }
+
+
+            var totalTime = 600; // Total time in seconds (e.g., 180 seconds = 3 minutes)
+            var timerDisplay = $('#timerDisplay');
+
+            // Start the countdown
+            function startTimer() {
+                var timer = totalTime;
+                updateTimerDisplay(timer);
+                var countdown = setInterval(function () {
+                    timer--;
+                    updateTimerDisplay(timer);
+                    if (timer <= 0) {
+                        clearInterval(countdown);
+                        handleTimeUp();
+                    }
+                }, 1000);
+            }
+
+            // Update the timer display
+            function updateTimerDisplay(time) {
+                var minutes = Math.floor(time / 60);
+                var seconds = time % 60;
+                var formattedTime = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+                timerDisplay.text(formattedTime);
+            }
+
+            // Handle time up event
+            function handleTimeUp() {
+                $('#submitButton').prop('disabled', true);
+                alert('The time has finished.');
+                // Redirect to the Home page
+                window.location.href = '/'; // Replace '/' with the actual URL of your Home page
+            }
+
+            // Start the timer when the page is ready
+            startTimer();
+
+        });
+    </script>
+}

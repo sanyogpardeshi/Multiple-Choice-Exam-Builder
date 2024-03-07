@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ExamApplication.Models.Question>
+
+@{
+    ViewData["Title"] = "ListQuestions";
+}
+
+<div class="pageBody d-flex justify-content-around">
+
+    <div class="card w-25" style="margin-right:25px;">
+        <img src="~/images/ListingImage.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">List of Exams</h5>
+            <p class="card-text">Welcome Instructor. Here in this page, you can see the exams created before.</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">You can delete the question if you want.</li>
+            <li class="list-group-item">Also if you would like, you can see the details.</li>
+        </ul>
+    </div>
+    <div class="createBody  w-75">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OptionCount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.QuestionText)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OptionCount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuestionText)
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>  
+</div>
+

@@ -1,0 +1,124 @@
+﻿@model ExamApplication.ViewModel.ExamViewModel
+
+@{
+    ViewData["Title"] = "CreateExam";
+}
+
+<div class="pageBody d-flex justify-content-around">
+
+    <div class="card w-25" style="margin-right:25px;">
+        <img src="~/images/QuestionImage.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">Create Multiple Choice Exam</h5>
+            <p class="card-text">Welcome Instructor. Here in this page, you can create an exam to student perform in system later on.</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">First specify a name for the exam.</li>
+            <li class="list-group-item">Select the department for the exam.</li>
+            <li class="list-group-item">And check the question you want to include the exam paper.</li>
+        </ul>
+    </div>
+
+    <div class="createBody  w-75">
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="CreateExam">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="ExamTopic" class="control-label"></label>
+                        <input asp-for="ExamTopic" class="form-control" />
+                        <span asp-validation-for="ExamTopic" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="SelectedQuestions" class="control-label" hidden ></label>
+                        <input asp-for="SelectedQuestions" name="SelectedQuestions" hidden />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                    <hr />
+                </form>
+            </div>
+        </div>
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Option Count
+                    </th>
+                    <th>
+                        Question Text
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var item in Model.AllQuestions)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OptionCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuestionText)
+                            </td>
+                            <td>
+                                <input type="checkbox" name="Ques" title="Ques" placeholder="Ques" value="@item.Id" />
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+
+
+    </div>
+   
+</div>
+
+
+@* JavaScript code to handle checkboxes and update SelectedQuestions list *@
+@section Scripts {
+    <script>
+        // Function to update the SelectedQuestions list when checkboxes are checked/unchecked
+        function updateSelectedQuestions() {
+            const selectedQuestions = [];
+
+            $('input[name="Ques"]:checked').each(function () {
+                const valueToAdd = parseInt($(this).val());
+                console.log("Add method Triggered. The Id is: ", $(this).val());
+
+                selectedQuestions.push(valueToAdd);
+            });
+
+            const selectedQuestionsString = selectedQuestions.join("-");
+            $('input[name="SelectedQuestions"]').val(selectedQuestionsString);
+            console.log("SelectedQuestions Value: ", $('input[name="SelectedQuestions"]').val());
+        }
+
+
+
+        // Call the updateSelectedQuestions function when the checkboxes are changed
+        $(document).ready(function () {
+            $('input[name="Ques"]').change(function () {
+                var isChecked = $(this).prop('checked');
+                console.log("Change method Triggered. The Id is: ", $(this).val());
+                updateSelectedQuestions();
+            });
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

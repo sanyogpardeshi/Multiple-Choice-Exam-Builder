@@ -1,0 +1,108 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ExamApplication</title>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ExamApplication.styles.css" asp-append-version="true" />
+
+    <style>
+        .container{
+            max-width: 975px;
+        }
+
+        body {
+            background-image: url("https://freedesignfile.com/upload/2021/02/Gradient-blue-geometric-abstract-background-vector.jpg");
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+            /* Adjust the transparency as needed. 0 means fully transparent, 1 means fully opaque. */
+        }
+</style>
+</head>
+<body>
+    <!-- Responsive navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+        <div class="container px-5">
+            <a class="navbar-brand" href="#!">Strathclyde Exam Portal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="Index">Home</a></li>
+                    @{
+
+                        if (User.Identity.IsAuthenticated)
+                        {
+
+                            if (User.IsInRole("Student"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Student" asp-action="TakeExam">Exams</a>
+                                </li>
+                            }
+
+                            
+                        }
+                    }
+                    <li class="nav-item"><a class="nav-link" href="#!">Ranks</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            @{
+                                if (User.Identity.IsAuthenticated)
+                                {
+                                    if (User.IsInRole("Instructor"))
+                                    {
+                                        <a class="dropdown-item" asp-controller="Instructor" asp-action="Index">Instructor Panel</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" asp-controller="Student" asp-action="Index">My Page</a>
+                                    }
+                                    <div class="dropdown-divider"></div>
+                                    <form id="logoutForm" asp-controller="User" asp-action="Logout" method="post" class="d-none">
+
+                                        <button class="dropdown-item" type="submit" style="text-decoration: none;text-align: center;width: 100%;background: none;">Logout</button>
+                                    </form>
+                                    <a class="dropdown-item" href="#" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+                                }
+                                else
+                                {
+                                    <a class="dropdown-item" asp-controller="User" asp-action="Register">Register</a>
+                                    <a class="dropdown-item" asp-controller="User" asp-action="Login">Login</a>
+                                }
+                            }
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+ 
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+
+
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

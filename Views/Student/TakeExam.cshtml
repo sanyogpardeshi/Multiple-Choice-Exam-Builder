@@ -1,0 +1,47 @@
+﻿@model List<ExamApplication.ViewModel.TakeExamViewModel>
+
+<div class="pageBody d-flex justify-content-around">
+
+    <div class="card w-25" style="margin-right:25px;">
+        <img src="~/images/ExamImage.png" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">Take Multiple Choice Exam</h5>
+            <p class="card-text">Welcome Student. Here in this page, you can find the available exams for you.</p>
+        </div>
+    </div>
+
+
+    <div class="createBody  w-75">
+        <h1>Available Exams</h1>
+        <hr />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Exam Name</th>
+                    <th>Exam Department</th>
+                    <th>Question Count</th>
+                    <th>Instructor Name</th>
+                    <th></th> <!-- Empty column for the button -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var exam in Model)
+                {
+                    <tr>
+                        <td>@exam.Name</td>
+                        <td>@exam.ExamTopic</td>
+                        <td>@exam.QuestionCount</td>
+                        <td>@exam.InstructorName</td>
+                        <td>
+                            <form asp-controller="Student" asp-action="TakeExam" method="post">
+                                <button type="submit" class="btn btn-primary" asp-route-id="@exam.Id">Take Exam</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+

@@ -1,0 +1,69 @@
+﻿@model ExamApplication.ViewModel.QuestionViewModel
+
+<h2></h2>
+
+
+<div class="pageBody  d-flex justify-content-around">
+    <div class="card w-25" style="margin-right:25px;">
+        <img src="~/images/QuestionImage.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">Create Multiple Choice Question</h5>
+            <p class="card-text">Welcome Instructor. Here in this page, you can create a question to ask in exams later on.</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">First specify a text for the question.</li>
+            <li class="list-group-item">Select the option count from the dropdown button.</li>
+            <li class="list-group-item">And fill the options. Please do not forget tick the right option.</li>
+        </ul>
+    </div>
+
+    <div class="createBody w-75">
+        <form asp-controller="Instructor" asp-action="CreateQuestion" method="post">
+            <div class="form-group">
+                <label asp-for="QuestionText">Question Text:</label>
+                <input asp-for="QuestionText" class="form-control" />
+                <span asp-validation-for="QuestionText" class="text-danger"></span>
+            </div>
+            <br />
+            <select class="form-select" aria-label="Default select example" id="optionCount" asp-for="OptionCount">
+                <option selected>Select Option Count</option>
+                <option value="3">Three</option>
+                <option value="4">Four</option>
+                <option value="5">Five</option>
+            </select>
+            <br />
+            <div class="form-group" id="optionGeneration">
+            </div>
+            <button type="submit" class="btn btn-primary">Create Question</button>
+        </form>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#optionCount').on('change', function () {
+                var optionIndex = $('#optionCount').val();
+                $('#optionGeneration').empty(); // Clear previous options
+                
+                for (var i = 0; i < optionIndex; i++) {
+                    var optionHtml = `
+                        <div class="form-group">
+                            <label>Correct or not?</label>
+                            <input type="checkbox" name="OptionViewModels[${i}].AnswerOrNot" title="Correct or not?" value="true" />
+                            <input type="hidden" name="OptionViewModels[${i}].AnswerOrNot" value="false" />
+
+                        </div>
+                        <div class="form-group">
+                             <input type="text" name="OptionViewModels[${i}].OptionText" class="form-control" title="Option Text" placeholder="Option Text" />
+                        </div>
+                        <br/>
+                    `;
+                    $('#optionGeneration').append(optionHtml);
+                }
+            });
+        });
+    </script>
+}
