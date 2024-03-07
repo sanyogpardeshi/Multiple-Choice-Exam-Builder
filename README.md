@@ -1,5 +1,5 @@
 # ExamApplication
- A Exam Application built to conduct MCQ exams
+ A Exam Application built to conduct MCQ exams with login and register for instructor as well as students with a detailed report about the porject with research.
 
 ![image](https://github.com/sanyogpardeshi/Multiple-Choice-Exam-Builder/assets/126625854/f2171756-3f6a-4add-9030-42565c323721)
 
